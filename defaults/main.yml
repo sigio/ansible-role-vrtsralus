@@ -1,0 +1,27 @@
+---
+# defaults file for ralus-client
+
+vrtsralus_package_files:
+  - symbdsnap-3.1.0-51425.2.6.32_220.el6.x86_64.rpm
+  - VRTSralus-14.2.1180-3142.x86_64.rpm
+
+vrtsralus_compat_libs:
+  - compat-libstdc++-33
+
+vrtsralus_installroot: "/opt/VRTSralus"
+vrtsralus_bindir: "{{vrtsralus_installroot}}/bin"
+
+vrtsralus_username: "svc_beuser"
+
+# Group must be named be_oper (at least for our install, don't know if this is hardcoded)
+vrtsralus_groupname: "be_oper"
+vrtsralus_tmpdir: "/tmp"
+
+# Not too sure about the specific range, but it's only allowed to the specified
+# backup_servers hosts
+vrtsralus_portrange: "30000-55000"
+vrtsralus_ndmpport: "10000"
+
+# Overrule these with specific id's, or use null to let the system pick an uid/gid itself
+vrtsralus_uid:      null
+vrtsralus_gid:      null

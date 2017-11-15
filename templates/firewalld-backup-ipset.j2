@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- {{ ansible_managed }} -->
+<ipset type="hash:ip">
+  <short>backupservers</short>
+  <description>BackupExec Servers</description>
+{% for host in backup_servers %}
+  <entry>{{host}}</entry>
+{% endfor %}
+</ipset>

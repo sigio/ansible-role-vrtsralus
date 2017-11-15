@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- {{ ansible_managed }} -->
+<service>
+  <short>ralus</short>
+  <description>BackupExec Ralus Agent</description>
+  <port protocol="tcp" port="{{vrtsralus_ndmpport}}"/>
+  <port protocol="tcp" port="{{vrtsralus_portrange}}"/>
+</service>
+

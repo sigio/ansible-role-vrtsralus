@@ -1,0 +1,23 @@
+# {{ansible_managed }}
+
+[Unit]
+Description=Symantec Backup Exec Remote Agent
+After=Network.target
+After=syslog.target
+ConditionPathExists={{vrtsralus_bindir}}
+
+[Install]
+WantedBy=multi-user.target
+Alias=ralus.service
+
+[Service]
+Type=simple
+User=root
+Group=root
+ExecStart={{vrtsralus_bindir}}/beremote --log-console
+KillMode=process
+KillSignal=SIGTERM
+Restart=on-abort
+RestartSec=10s
+PrivateTmp=false
+LimitNOFILE=65535

@@ -1,0 +1,11 @@
+---
+# handlers file for ralus-client
+
+- name: reload systemd
+  command: systemctl daemon-reload
+
+- name: reload firewalld
+  command: firewall-cmd --reload
+
+- name: restart vrts-ralus
+  service: name=vrts-ralus state=restarted

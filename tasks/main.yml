@@ -1,0 +1,60 @@
+---
+# tasks file for ralus-client
+
+- name: Install compat packages
+  yum: state=installed name="{{item}}"
+  with_items: "{{vrtsralus_compat_libs}}"
+
+- name: Check if VRTSralus is already installed
+  stat: path="{{vrtsralus_bindir}}"
+  register: ralusdir
+
+- name: Copy package files
+  copy: src={{item}} dest="{{vrtsralus_tmpdir}}/{{item}}"
+  with_items: "{{vrtsralus_package_files}}"
+  when: not ralusdir.stat.exists|bool
+
+- name: Install VRTSralus
+  command: "rpm -Uvh {{vrtsralus_tmpdir}}/{{item}}"
+  with_items: "{{vrtsralus_package_files}}"
+  when: not ralusdir.stat.exists|bool
+
+- name: Create 'be_oper' group
+  group: name="{{vrtsralus_groupname}}" gid="{{vrtsralus_gid}}" state=present
+
+- name: Create 'be_user'
+  user: name="{{vrtsralus_username}}" group="{{vrtsralus_groupname}}" groups="{{vrtsralus_groupname}}" uid="{{vrtsralus_uid}}" state=present 
+
+# The package postinstall script doesn't create this directory, and the agent
+# itself can't create it, since it tries doing this after dropping privileges
+- name: Create 'data' directory
+  file: state=directory path="{{item}}" owner="{{vrtsralus_username}}" group="{{vrtsralus_groupname}}"
+  with_items:
+    - "{{vrtsralus_installroot}}/data"
+
+- name: Template systemd script
+  template: src="vrts-ralus.service" dest="/etc/systemd/system/vrts-ralus.service" owner=root group=root mode=0644
+  notify:
+    - reload systemd
+    - restart vrts-ralus
+
+- name: Configure firewall service
+  template: src="{{item.src}}" dest="{{item.dest}}" owner="{{item.owner|default('root')}}" group="{{item.group|default('root')}}" mode="{{item.mode|default('0600')}}"
+  with_items:
+    - { src: "firewalld-ralus.j2", dest: "/etc/firewalld/services/ralus.xml", mode: "0644" }
+    - { src: "firewalld-backup-ipset.j2", dest: "/etc/firewalld/ipsets/backupservers.xml", mode: "0644" }
+  when: firewalld_enabled|bool
+  tags:
+    - firewall
+    - template
+
+- name: Enable firewall configuration
+  firewalld: immediate=true permanent=true state=enabled rich_rule="{{item}}"
+  with_items:
+    - "rule family=ipv4 source ipset=backupservers service name=ralus accept"
+  notify:
+    - reload firewalld
+
+- name: Enable and start vrts-ralus service
+  service: name=vrts-ralus enabled=yes state=started
+
