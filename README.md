@@ -21,6 +21,8 @@ backup_servers:
 If using a firewall (firewalld), create a variable
   - firewalld_enabled: true
 
+Specify an encrypted password for the svc_beuser account in 'vrtsralus_password'
+
 Other variables are documented in the defaults/main.yml file
 
 Dependencies

@@ -23,7 +23,7 @@
   group: name="{{vrtsralus_groupname}}" gid="{{vrtsralus_gid}}" state=present
 
 - name: Create 'be_user'
-  user: name="{{vrtsralus_username}}" group="{{vrtsralus_groupname}}" groups="{{vrtsralus_groupname}}" uid="{{vrtsralus_uid}}" state=present 
+  user: name="{{vrtsralus_username}}" group="{{vrtsralus_groupname}}" groups="{{vrtsralus_groupname}}" uid="{{vrtsralus_uid}}" password="{{vrtsralus_password|default('')}}" update_password="{{update_password|default('on_create')}}" state=present 
 
 # The package postinstall script doesn't create this directory, and the agent
 # itself can't create it, since it tries doing this after dropping privileges

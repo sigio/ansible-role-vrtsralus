@@ -12,6 +12,7 @@ vrtsralus_installroot: "/opt/VRTSralus"
 vrtsralus_bindir: "{{vrtsralus_installroot}}/bin"
 
 vrtsralus_username: "svc_beuser"
+vrtsralus_password: ""
 
 # Group must be named be_oper (at least for our install, don't know if this is hardcoded)
 vrtsralus_groupname: "be_oper"
