@@ -19,10 +19,10 @@
   with_items: "{{vrtsralus_package_files}}"
   when: not ralusdir.stat.exists|bool
 
-- name: Create 'be_oper' group
+- name: Create 'beoper' group
   group: name="{{vrtsralus_groupname}}" gid="{{vrtsralus_gid}}" state=present
 
-- name: Create 'be_user'
+- name: Create 'svc_beuser'
   user: name="{{vrtsralus_username}}" group="{{vrtsralus_groupname}}" groups="{{vrtsralus_groupname}}" uid="{{vrtsralus_uid}}" password="{{vrtsralus_password|default('')}}" update_password="{{update_password|default('on_create')}}" state=present 
 
 # The package postinstall script doesn't create this directory, and the agent

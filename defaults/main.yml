@@ -14,13 +14,14 @@ vrtsralus_bindir: "{{vrtsralus_installroot}}/bin"
 vrtsralus_username: "svc_beuser"
 vrtsralus_password: ""
 
-# Group must be named be_oper (at least for our install, don't know if this is hardcoded)
-vrtsralus_groupname: "be_oper"
+# Group must be named beoper (at least for our install, don't know if this is hardcoded)
+vrtsralus_groupname: "beoper"
 vrtsralus_tmpdir: "/tmp"
 
 # Not too sure about the specific range, but it's only allowed to the specified
 # backup_servers hosts
 vrtsralus_portrange: "30000-55000"
+vrtsralus_browseport: "6101"
 vrtsralus_ndmpport: "10000"
 
 # Overrule these with specific id's, or use null to let the system pick an uid/gid itself
